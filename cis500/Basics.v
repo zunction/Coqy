@@ -535,13 +535,17 @@ Fixpoint exp (base power : nat) : nat :=
 
     Translate this into Coq. *)
 
-Fixpoint factorial (n:nat) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint factorial (n:nat) : nat :=
+  match n with
+    | O => S O
+    | S n' => mult n (factorial n')
+  end.
+
 
 Example test_factorial1:          (factorial 3) = 6.
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (** We can make numerical expressions a little easier to read and
@@ -615,7 +619,9 @@ Proof. simpl. reflexivity.  Qed.
     yielding a [b]oolean.  Instead of making up a new [Fixpoint] for
     this one, define it in terms of a previously defined function. *)
 
-Definition blt_nat (n m : nat) : bool
+Definition blt_nat (n m : nat) : bool :=
+  |
+
   (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
 
 Example test_blt_nat1:             (blt_nat 2 2) = false.
