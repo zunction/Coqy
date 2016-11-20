@@ -619,17 +619,16 @@ Proof. simpl. reflexivity.  Qed.
     yielding a [b]oolean.  Instead of making up a new [Fixpoint] for
     this one, define it in terms of a previously defined function. *)
 
-Definition blt_nat (n m : nat) : bool :=
-  |
-
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
-
+Definition blt_nat (n m : nat) : bool := andb (leb n m) (negb (beq_nat n m)).
+(* Can also define using this:
+Definition blt_nat (n m : nat) : bool := (leb n m) && (negb (beq_nat n m)).
+ *)
 Example test_blt_nat1:             (blt_nat 2 2) = false.
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 Example test_blt_nat2:             (blt_nat 2 4) = true.
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 Example test_blt_nat3:             (blt_nat 4 2) = false.
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -799,7 +798,15 @@ Proof.
 Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* move quantifiers into the context: *)
+  intros n m o.
+  (* move hypotheses into the context: *)
+  intros n_equals_m m_equals_o.
+  (* rewrite the goal using the hypotheses: *)
+  rewrite -> n_equals_m.
+  rewrite -> m_equals_o.
+  reflexivity. Qed.
+
 (** [] *)
 
 (** The [Admitted] command tells Coq that we want to skip trying
@@ -831,7 +838,11 @@ Theorem mult_S_1 : forall n m : nat,
   m = S n ->
   m * (1 + n) = m * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m.
+  simpl.
+  intros m_equals_Sn.
+  rewrite -> m_equals_Sn.
+  reflexivity. Qed.
 
 (* (N.b. This proof can actually be completed without using [rewrite],
    but please do use [rewrite] for the sake of the exercise.) *)
