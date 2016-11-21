@@ -1054,15 +1054,23 @@ Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
   intros b c b_and_c_true.
-  - destruct b.
-    * rewrite -> b_and_c_true.
+    - destruct b.
+     * destruct c.
+  reflexivity.
+  rewrite <- b_and_c_true.
+  Qed.     
+  
 (** [] *)
 
 (** **** Exercise: 1 star (zero_nbeq_plus_1)  *)
 Theorem zero_nbeq_plus_1 : forall n : nat,
   beq_nat 0 (n + 1) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros [|n'].
+  simpl. reflexivity.
+  simpl. reflexivity.
+  Qed.
+
 (** [] *)
 
 (* ================================================================= *)
