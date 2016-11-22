@@ -1053,12 +1053,12 @@ Qed.
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-  intros b c b_and_c_true.
-    - destruct b.
-     * destruct c.
+  intros [] [] b_and_c_true.
   reflexivity.
-  rewrite <- b_and_c_true.
-  Qed.     
+  rewrite <- b_and_c_true. reflexivity.
+  reflexivity.
+  rewrite <- b_and_c_true. reflexivity.
+  Qed.
   
 (** [] *)
 
