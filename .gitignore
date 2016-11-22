@@ -1,4 +1,5 @@
-*.vo
+# allow .vo files for now.
+#*.vo
 *.glob
 *.v.d
 *.DS_Store
