@@ -134,7 +134,7 @@ Proof.
   - reflexivity.
   - simpl. rewrite -> IHn'. reflexivity.
 Qed.
-  (* FILL IN HERE *) Admitted.
+
 
 Theorem plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
