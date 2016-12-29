@@ -157,7 +157,7 @@ Proof.
     + rewrite -> plus_O_n. rewrite <- plus_n_O. reflexivity.
     + simpl. rewrite <- IHm'. rewrite -> IHn'. simpl. rewrite -> IHn'. reflexivity.
 Qed.
- 
+
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
