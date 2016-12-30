@@ -161,7 +161,16 @@ Qed.
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  { induction n as [|n' IHn'].
+    { simpl. reflexivity. }
+    { simpl. induction m as [|m' IHm'].
+      { induction p as [|p' IHp'].
+        { rewrite -> IHn'. reflexivity. }
+        { rewrite -> IHn'. reflexivity. } }
+      { simpl. induction p as [|p' IHp'].
+        { rewrite <- IHn'. simpl. reflexivity. }
+        { rewrite <- IHn'. simpl. reflexivity. } } } }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (double_plus)  *)
@@ -177,7 +186,10 @@ Fixpoint double (n:nat) :=
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.
-  (* FILL IN HERE *) Admitted.
+  { induction n as [|n' IHn'].
+    { reflexivity. }
+    { simpl. rewrite -> IHn'.  rewrite -> plus_n_Sm. reflexivity. } }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_S)  *)
@@ -191,7 +203,10 @@ Proof.
 Theorem evenb_S : forall n : nat,
   evenb (S n) = negb (evenb n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  { induction n as [|n' IHn'].
+    { simpl. reflexivity. }
+    { rewrite -> IHn'. simpl. rewrite -> negb_involutive. reflexivity. } }
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 starM (destruct_induction)  *)
