@@ -130,46 +130,35 @@ Proof.
 Theorem mult_0_r : forall n:nat,
   n * 0 = 0.
 Proof.
-  induction n as [|n' IHn'].
-  - reflexivity.
-  - simpl. rewrite -> IHn'. reflexivity.
+  intros n. induction n as [| n' IHn' ].
+    { simpl. reflexivity. }
+    { simpl. rewrite -> IHn'. reflexivity. }
 Qed.
-
 
 Theorem plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
 Proof.
-  induction n as [|n' IHn'].
-  - simpl. reflexivity.
-  - induction m as [|m' IHm'].
-    + simpl. rewrite -> IHn'. reflexivity.
-    + rewrite <- IHm'. simpl. rewrite -> IHn'. rewrite -> IHn'. reflexivity.
-Qed.
+  intros n m. induction n as [| n' IHn'].
+  { simpl. reflexivity. } 
+  { simpl. rewrite -> IHn'. reflexivity. }
+Qed.  
 
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  induction n as [|n' IHn']. induction m as [|m' IHm'].
-  - reflexivity.
-  - rewrite -> plus_O_n. rewrite <- plus_n_O. reflexivity.
-  - induction m as [|m' IHm'].
-    + rewrite -> plus_O_n. rewrite <- plus_n_O. reflexivity.
-    + simpl. rewrite <- IHm'. rewrite -> IHn'. simpl. rewrite -> IHn'. reflexivity.
-Qed.
+  intros n m. induction n as [|n' IHn'].
+  { simpl. rewrite <- plus_n_O. reflexivity. }
+  { simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity. }
+Qed.  
+
 
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
-  { induction n as [|n' IHn'].
-    { simpl. reflexivity. }
-    { simpl. induction m as [|m' IHm'].
-      { induction p as [|p' IHp'].
-        { rewrite -> IHn'. reflexivity. }
-        { rewrite -> IHn'. reflexivity. } }
-      { simpl. induction p as [|p' IHp'].
-        { rewrite <- IHn'. simpl. reflexivity. }
-        { rewrite <- IHn'. simpl. reflexivity. } } } }
+  intros n m p. induction n as [|n' IHn'].
+  { simpl. reflexivity. }
+  { simpl. rewrite -> IHn'. reflexivity. }
 Qed.
 (** [] *)
 
@@ -186,10 +175,10 @@ Fixpoint double (n:nat) :=
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.
-  { induction n as [|n' IHn'].
-    { reflexivity. }
-    { simpl. rewrite -> IHn'.  rewrite -> plus_n_Sm. reflexivity. } }
-Qed.
+  intros n. induction n as [| n' IHn'].
+  { reflexivity. }
+  { simpl. rewrite -> IHn'. rewrite <- plus_n_Sm. reflexivity. }
+Qed.  
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_S)  *)
@@ -203,9 +192,9 @@ Qed.
 Theorem evenb_S : forall n : nat,
   evenb (S n) = negb (evenb n).
 Proof.
-  { induction n as [|n' IHn'].
-    { simpl. reflexivity. }
-    { rewrite -> IHn'. simpl. rewrite -> negb_involutive. reflexivity. } }
+  intros n. induction n as [| n' IHn'].
+  { simpl. reflexivity. }
+  { rewrite -> IHn'. simpl. rewrite -> negb_involutive. reflexivity. }
 Qed.
 (** [] *)
 
@@ -436,7 +425,12 @@ Proof.
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  assert (H1: n + (m + p) = (m + p) + n). {rewrite -> plus_comm. reflexivity. }
+  rewrite -> H1. assert (H2: p + n = n + p). {rewrite -> plus_comm. reflexivity. }
+  rewrite <- H2. rewrite -> plus_assoc. reflexivity.
+Qed.  
+
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
@@ -446,6 +440,10 @@ Proof.
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
+  intros n m. destruct n. 
+  { simpl. rewrite -> mult_0_r. reflexivity. }
+  { simpl. }
+   
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
