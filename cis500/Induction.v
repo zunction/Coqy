@@ -429,7 +429,7 @@ Proof.
   assert (H1: n + (m + p) = (m + p) + n). {rewrite -> plus_comm. reflexivity. }
   rewrite -> H1. assert (H2: p + n = n + p). {rewrite -> plus_comm. reflexivity. }
   rewrite <- H2. rewrite -> plus_assoc. reflexivity.
-Qed.  
+Qed.
 
 
 (** Now prove commutativity of multiplication.  (You will probably
@@ -440,9 +440,14 @@ Qed.
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
-  intros n m. destruct n. 
+  intros n m. induction n as [| n' IHn'].
   { simpl. rewrite -> mult_0_r. reflexivity. }
-  { simpl. }
+  { simpl. rewrite -> IHn'. 
+  assert (H: m + m * n' = m * (1 + n')).
+    { induction m as [|m' IHm'].
+      { simpl. reflexivity. }
+      { simpl. rewrite -> plus_swap. rewrite -> IHm'. simpl. reflexivity.  }
+    } }
    
   (* FILL IN HERE *) Admitted.
 (** [] *)
