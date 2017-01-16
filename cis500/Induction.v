@@ -442,10 +442,7 @@ Theorem mult_comm : forall m n : nat,
 Proof.
   intros n m. induction n as [| n' IHn'].
   { simpl. rewrite -> mult_0_r. reflexivity. }
-  { simpl. induction m as [|m' IHm'].
-    { simpl. rewrite -> mult_0_r. reflexivity. }
-    { simpl. rewrite -> IHn'. simpl. rewrite -> plus_swap. }
-  assert (H: m + m * n' = m * (1 + n')).
+  { simpl. rewrite -> IHn'. assert (H: m + m * n' = m * (1 + n')).
     { induction m as [|m' IHm'].
       { simpl. reflexivity. }
       { simpl. rewrite -> plus_swap. rewrite -> IHm'. simpl. reflexivity.
