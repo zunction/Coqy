@@ -437,20 +437,22 @@ Qed.
     in the proof of this one.  You may find that [plus_swap] comes in
     handy.) *)
 
+Theorem factorize : forall m n : nat,
+  m + m * n = m * (1 + n).
+Proof.
+  intros n m. induction n as [| n' IHn'].
+    { simpl. reflexivity. }
+    { simpl. rewrite -> plus_swap. rewrite -> IHn'. simpl. reflexivity. }
+Qed.
+
+
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
   intros n m. induction n as [| n' IHn'].
   { simpl. rewrite -> mult_0_r. reflexivity. }
-  { simpl. rewrite -> IHn'. assert (H: m + m * n' = m * (1 + n')).
-    { induction m as [|m' IHm'].
-      { simpl. reflexivity. }
-      { simpl. rewrite -> plus_swap. rewrite -> IHm'. simpl. reflexivity.
-        destruct m'.
-          { simpl. rewrite -> mult_0_r. reflexivity. }   }
-    } }
-   
-  (* FILL IN HERE *) Admitted.
+  { simpl. rewrite -> IHn'. rewrite -> factorize. simpl. reflexivity. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (more_exercises)  *)
