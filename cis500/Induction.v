@@ -492,17 +492,22 @@ Qed.
 Theorem plus_ble_compat_l : forall n m p : nat,
   leb n m = true -> leb (p + n) (p + m) = true.
 Proof.
-  intros n m p.
-  (* FILL IN HERE *) Admitted.
+  intros n m p n_smaller_than_m. induction p as [| p' IHp'].
+  { simpl. rewrite -> n_smaller_than_m. reflexivity. }
+  { simpl. rewrite -> IHp'. reflexivity. }
+Qed.
 
 Theorem S_nbeq_0 : forall n:nat,
   beq_nat (S n) 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. simpl. reflexivity.
+Qed.
+
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. simpl. rewrite -> plus_n_O. reflexivity.
+Qed.
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -511,7 +516,15 @@ Theorem all3_spec : forall b c : bool,
                (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c. destruct b.
+  { destruct c.
+    { simpl. reflexivity. }
+    { simpl. reflexivity. } }
+  { destruct c.
+    { simpl. reflexivity. }
+    { simpl. reflexivity. } }
+Qed.
+
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
