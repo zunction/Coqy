@@ -152,6 +152,25 @@ Proof. simpl. reflexivity.  Qed.
     to this topic in later chapters. *)
 
 (* ================================================================= *)
+(** ** Homework Submission Guidelines *)
+
+(** If you are using Software Foundations in a course, your instructor
+    may use automatic scripts to help grade your homework assignments.
+    In order for these scripts to work correctly (so that you get full
+    credit for your work!), please be careful to follow these rules:
+      - The grading scripts work by extracting marked regions of the
+        .v files that you submit.  It is therefore important that you
+        do not alter the "markup" that delimits exercises: the
+        Exercise header, the name of the exercise, the "empty square
+        bracket" marker at the end, etc.  Please leave this markup
+        exactly as you find it.
+      - Do not delete exercises.  If you skip an exercise (e.g.,
+        because it is marked Optional, or because you can't solve it),
+        it is OK to leave a partial proof in your .v file, but in this
+        case please make sure it ends with [Admitted] (not, for
+        example [Abort]). *)
+
+(* ================================================================= *)
 (** ** Booleans *)
 
 (** In a similar way, we can define the standard type [bool] of
@@ -235,21 +254,17 @@ Proof. simpl. reflexivity. Qed.
     should return [true] if either or both of its inputs are
     [false]. *)
 
-Definition nandb (b1:bool) (b2:bool) : bool :=
-  match b1 with 
-  | false => true
-  | true => (negb b2)
-  end.
-
+Definition nandb (b1:bool) (b2:bool) : bool
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
 
 Example test_nandb1:               (nandb true false) = true.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_nandb2:               (nandb false false) = true.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_nandb3:               (nandb false true) = true.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_nandb4:               (nandb true true) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** **** Exercise: 1 star (andb3)  *)
@@ -257,21 +272,17 @@ Proof. simpl. reflexivity. Qed.
     return [true] when all of its inputs are [true], and [false]
     otherwise. *)
 
-Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool :=
-  match b1 with 
-  | false => false
-  | true => (andb b2 b3)
-  end.
-
+Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
 
 Example test_andb31:                 (andb3 true true true) = true.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_andb32:                 (andb3 false true true) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_andb33:                 (andb3 true false true) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_andb34:                 (andb3 true true false) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
@@ -535,17 +546,13 @@ Fixpoint exp (base power : nat) : nat :=
 
     Translate this into Coq. *)
 
-Fixpoint factorial (n:nat) : nat :=
-  match n with
-    | O => S O
-    | S n' => mult n (factorial n')
-  end.
-
+Fixpoint factorial (n:nat) : nat
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
 
 Example test_factorial1:          (factorial 3) = 6.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 (** [] *)
 
 (** We can make numerical expressions a little easier to read and
@@ -619,16 +626,15 @@ Proof. simpl. reflexivity.  Qed.
     yielding a [b]oolean.  Instead of making up a new [Fixpoint] for
     this one, define it in terms of a previously defined function. *)
 
-Definition blt_nat (n m : nat) : bool := andb (leb n m) (negb (beq_nat n m)).
-(* Can also define using this:
-Definition blt_nat (n m : nat) : bool := (leb n m) && (negb (beq_nat n m)).
- *)
+Definition blt_nat (n m : nat) : bool
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+
 Example test_blt_nat1:             (blt_nat 2 2) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_blt_nat2:             (blt_nat 2 4) = true.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 Example test_blt_nat3:             (blt_nat 4 2) = false.
-Proof. simpl. reflexivity. Qed.
+(* FILL IN HERE *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
@@ -798,14 +804,10 @@ Proof.
 Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
-  (* move quantifiers into the context: *)
-  intros n m o.
-  (* move hypotheses into the context: *)
-  intros n_equals_m m_equals_o.
-  (* rewrite the goal using the hypotheses: *)
-  rewrite -> n_equals_m.
-  rewrite -> m_equals_o.
-  reflexivity. Qed.
+  intros n m o. intros n_eq_m m_eq_o. 
+  rewrite -> n_eq_m. rewrite -> m_eq_o. 
+  reflexivity.
+Qed.
 
 (** [] *)
 
@@ -838,11 +840,7 @@ Theorem mult_S_1 : forall n m : nat,
   m = S n ->
   m * (1 + n) = m * m.
 Proof.
-  intros n m.
-  simpl.
-  intros m_equals_Sn.
-  rewrite -> m_equals_Sn.
-  reflexivity. Qed.
+  (* FILL IN HERE *) Admitted.
 
 (* (N.b. This proof can actually be completed without using [rewrite],
    but please do use [rewrite] for the sake of the exercise.) *)
@@ -1053,24 +1051,22 @@ Qed.
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-  intros [] [] b_and_c_true.
-  reflexivity.
-  rewrite <- b_and_c_true. reflexivity.
-  reflexivity.
-  rewrite <- b_and_c_true. reflexivity.
-  Qed.
-  
+  intros b c. destruct b.
+  - simpl. intros H1. rewrite -> H1. reflexivity.
+  - destruct c.
+  {simpl. intros H2. rewrite <- H2. reflexivity. }
+  {simpl. intros H3. rewrite -> H3. reflexivity. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (zero_nbeq_plus_1)  *)
 Theorem zero_nbeq_plus_1 : forall n : nat,
   beq_nat 0 (n + 1) = false.
 Proof.
-  intros [|n'].
-  simpl. reflexivity.
-  simpl. reflexivity.
-  Qed.
-
+  intros n. destruct n as [|n'].
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -1229,5 +1225,5 @@ Proof.
 (* FILL IN HERE *)
 (** [] *)
 
-(** $Date: 2016-10-05 16:20:27 -0400 (Wed, 05 Oct 2016) $ *)
+(** $Date: 2016-11-22 16:39:52 -0500 (Tue, 22 Nov 2016) $ *)
 
