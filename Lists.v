@@ -1167,7 +1167,7 @@ Theorem update_eq :
   forall (d : partial_map) (x : id) (v: nat),
     find x (update d x v) = Some v.
 Proof.
-  intros d x v. destruct d as [| d' x' v'].
+  intros d x v. destruct d as [| x' v' d'].
   { simpl. rewrite <- beq_id_refl. reflexivity. }
   { simpl.  rewrite <- beq_id_refl. reflexivity. }
 Qed.
@@ -1178,7 +1178,7 @@ Theorem update_neq :
   forall (d : partial_map) (x y : id) (o: nat),
     beq_id x y = false -> find x (update d y o) = find x d.
 Proof.
-  intros d x y o. destruct d as [| d' x' v'].
+  intros d x y o. destruct d as [| x' v' d'].
   { simpl. intros beq_id_false. rewrite -> beq_id_false. reflexivity. }
   { simpl. intros beq_id_false. rewrite -> beq_id_false. reflexivity. }
 Qed.

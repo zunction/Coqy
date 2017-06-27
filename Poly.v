@@ -137,7 +137,7 @@ Inductive grumble (X:Type) : Type :=
       - [e mumble (b c 0)]
       - [e bool (b c 0)]
       - [c]
-They are [d (b a 5)] and [e bool (b c 0)].
+They are [d (b a 5)], [e bool true] and [e mumble (b c 0)].
 *)
 (** [] *)
 
