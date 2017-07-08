@@ -51,6 +51,8 @@ Proof.
 (** You may find it instructive to experiment with this proof
     and see if there is a way to complete it using just [rewrite]
     instead of [apply]. *)
+(*I tried and it seems like there is no way. 
+    to proof it using just rewrite. *) 
 
 (** Typically, when we use [apply H], the statement [H] will
     begin with a [forall] that binds some _universal variables_.  When
@@ -76,7 +78,7 @@ Theorem silly_ex :
      evenb 3 = true ->
      oddb 4 = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros eq1 eq2. apply eq1. apply eq2. Qed.
 (** [] *)
 
 (** To use the [apply] tactic, the (conclusion of the) fact
@@ -104,12 +106,17 @@ Proof.
 (** (_Hint_: You can use [apply] with previously defined lemmas, not
     just hypotheses in the context.  Remember that [Search] is
     your friend.) *)
-
+SearchAbout rev.
 Theorem rev_exercise1 : forall (l l' : list nat),
      l = rev l' ->
      l' = rev l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. 
+  intros l l' eq1. rewrite -> eq1. symmetry. apply rev_involutive.
+  (*Alternative: 
+  rewrite -> eq1. 
+  rewrite -> rev_involutive. reflexivity.
+  *)
+Qed. 
 (** [] *)
 
 (** **** Exercise: 1 star, optionalM (apply_rewrite)  *)
@@ -117,7 +124,12 @@ Proof.
     [rewrite].  What are the situations where both can usefully be
     applied?
 
-(* FILL IN HERE *)
+(* Rewrite allows us to choose the direction of rewriting with -> or <-. 
+Apply on the other hand requires the fact to match the goal exaclty before 
+it can be applied. In particular the apply tactic is specifically for
+conditional hypotheses and lemmas as rewrite does not help in simplification.
+Thus both are usefully applied when it is not conditional.
+ *)
 *)
 (** [] *)
 
@@ -177,7 +189,7 @@ Example trans_eq_exercise : forall (n m o p : nat),
      (n + p) = m ->
      (n + p) = (minustwo o).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m o p eq1 eq2. rewrite -> eq2. apply eq1. Qed.
 (** [] *)
 
 (* ################################################################# *)
