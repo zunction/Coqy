@@ -1,0 +1,36 @@
+Inductive nationality : Type :=
+  | British : nationality
+  | Swedish : nationality
+  | Danish : nationality
+  | Norwegian : nationality
+  | German : nationality.
+  
+Inductive pet : Type :=
+  | Dog : pet
+  | Cat : pet
+  | Bird : pet
+  | Horse : pet
+  | Fish : pet.
+  
+Inductive beverage : Type :=
+  | tea : beverage
+  | coffee : beverage
+  | milk : beverage
+  | beer : beverage
+  | water : beverage.
+  
+Inductive house : Type :=
+  | red : house
+  | green : house
+  | white : house
+  | yellow : house
+  | blue : house.
+  
+Inductive cigar : Type :=
+  | PallMall : cigar
+  | Dunhill : cigar
+  | BlueMaster : cigar
+  | Prince : cigar
+  | blend : cigar.
+  
+  
