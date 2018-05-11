@@ -887,7 +887,7 @@ Theorem mult_S_1 : forall n m : nat,
   m = S n ->
   m * (1 + n) = m * m.
 Proof.
-  intros n m H1. rewrite -> plus_1_l. rewrite -> H1. reflexivity. Qed.
+  intros n m H1. rewrite -> plus_1_l. rewrite <- H1. reflexivity. Qed.
 
   (* (N.b. This proof can actually be completed without using [rewrite],
      but please do use [rewrite] for the sake of the exercise.) *)
