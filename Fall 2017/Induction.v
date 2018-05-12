@@ -440,17 +440,28 @@ Proof.
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction n as [| n' IHn'].
+  { reflexivity. }
+  { simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity. }
+Qed.
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
     in the proof of this one.  You may find that [plus_swap] comes in
     handy.) *)
 
+Theorem factorize_l : forall n m : nat, m + m * n = m * S n.
+Proof. intros n m. induction m as [| m' IHm'].
+  { simpl. reflexivity. }
+  { simpl. rewrite -> plus_swap. rewrite -> IHm'. reflexivity. }
+Qed.
+
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m. induction n as [| n' IHn']. 
+  { simpl. rewrite -> mult_0_r. reflexivity. }
+  { simpl. rewrite -> IHn'. rewrite -> factorize_l. reflexivity. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (more_exercises)  *)
