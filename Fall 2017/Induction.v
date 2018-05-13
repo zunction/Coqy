@@ -440,10 +440,11 @@ Proof.
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  intros n m p. induction n as [| n' IHn'].
-  { reflexivity. }
-  { simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity. }
-Qed.
+  intros n m p. rewrite -> plus_comm.
+  assert (H: n + p = p + n). { rewrite -> plus_comm. reflexivity. }
+  rewrite -> H.
+  rewrite -> plus_assoc. reflexivity.
+Qed.  
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
@@ -477,32 +478,43 @@ Check leb.
 
 Theorem leb_refl : forall n:nat,
   true = leb n n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. induction n as [|n' IHn'].
+  { reflexivity. }
+  { simpl. rewrite -> IHn'. reflexivity. }
+Qed.
 
 Theorem zero_nbeq_S : forall n:nat,
   beq_nat 0 (S n) = false.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. simpl. reflexivity.
+Qed.
+
 
 Theorem andb_false_r : forall b : bool,
   andb b false = false.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros [].
+  { simpl. reflexivity. }
+  { reflexivity. }
+Qed.
+
 
 Theorem plus_ble_compat_l : forall n m p : nat,
   leb n m = true -> leb (p + n) (p + m) = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m p H1. induction p as [| p' IHp'].
+  { simpl. rewrite -> H1. reflexivity. }
+  { simpl. rewrite -> IHp'. reflexivity. }
+Qed.
+
 
 Theorem S_nbeq_0 : forall n:nat,
   beq_nat (S n) 0 = false.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. simpl. reflexivity.
+
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. induction n as [| n' IHn'].
+  { simpl. reflexivity. }
+  { simpl. rewrite <- plus_n_O. reflexivity. }
+Qed.
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -510,18 +522,27 @@ Theorem all3_spec : forall b c : bool,
       (orb (negb b)
                (negb c))
   = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros [] [].
+  { simpl. reflexivity. }
+  { simpl. reflexivity. }
+  { simpl. reflexivity. }
+  { simpl. reflexivity. }
+Qed.  
+
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m p. induction n as [| n' IHn'].
+  { simpl. reflexivity. }
+  { simpl. rewrite -> IHn'. rewrite -> plus_assoc. reflexivity. }
+Qed.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m p. induction n as [| n' IHn'].
+  { simpl. reflexivity. }
+  { simpl. rewrite -> mult_plus_distr_r. rewrite -> IHn'. reflexivity. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (beq_nat_refl)  *)
@@ -533,8 +554,10 @@ Proof.
 
 Theorem beq_nat_refl : forall n : nat,
   true = beq_nat n n.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n. induction n as [|n' IHn'].
+  { reflexivity. }
+  { simpl. rewrite -> IHn'. reflexivity. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (plus_swap')  *)
@@ -549,8 +572,10 @@ Proof.
 
 Theorem plus_swap' : forall n m p : nat,
   n + (m + p) = m + (n + p).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros n m p. rewrite -> plus_comm. replace (n + p) with (p + n).
+  rewrite -> plus_assoc. reflexivity.
+  rewrite -> plus_comm. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, recommended (binary_commute)  *)
