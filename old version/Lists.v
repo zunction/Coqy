@@ -824,7 +824,7 @@ Proof.
   intros l1 l2. induction l1 as [| n l' IHl'].
   - simpl. rewrite -> app_nil_r. reflexivity.
   - simpl. rewrite -> IHl'. rewrite -> app_assoc. reflexivity.
-Qed.  
+Qed.
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
@@ -962,7 +962,7 @@ Qed.
 Theorem rev_injective: forall (l1 l2 : natlist), 
   rev l1 = rev l2 -> l1 = l2.
 Proof.
-  intros l1 l2. intros revl1_eq_revl2. rewrite <- rev_involutive.
+  intros l1 l2 revl1_eq_revl2. rewrite <- rev_involutive.
   rewrite <- revl1_eq_revl2. rewrite -> rev_involutive. reflexivity.
 Qed.
 (** [] *)

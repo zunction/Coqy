@@ -527,7 +527,7 @@ Proof. intros [] [].
   { simpl. reflexivity. }
   { simpl. reflexivity. }
   { simpl. reflexivity. }
-Qed.  
+Qed.
 
 
 Theorem mult_plus_distr_r : forall n m p : nat,
