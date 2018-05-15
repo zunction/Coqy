@@ -137,7 +137,8 @@ Inductive grumble (X:Type) : Type :=
       - [e mumble (b c 0)]
       - [e bool (b c 0)]
       - [c]
-They are [d (b a 5)], [e bool true] and [e mumble (b c 0)].
+They are [d mumble (b a 5)], [d bool (b a 5)], [e bool true],
+[e mumble (b c 0)].
 *)
 (** [] *)
 
@@ -679,7 +680,7 @@ Proof. reflexivity.  Qed.
     7. *)
 
 Definition filter_even_gt7 (l : list nat) : list nat :=
-    filter (fun l' => evenb l') (filter (fun l' => leb 7 l') l).
+  filter (fun l' => evenb l') (filter (fun l' => leb 7 l') l).
 
 Example test_filter_even_gt7_1 :
   filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
@@ -962,10 +963,6 @@ Check @fold.
 
 Definition fold_map {X Y:Type} (f : X -> Y) (l : list X) : list Y :=
   fold (fun (x : X) l' => app [f (x : X)] l' ) l [].
-  
-
-
-
 
 (** Write down a theorem [fold_map_correct] in Coq stating that
    [fold_map] is correct, and prove it. *)
@@ -1092,7 +1089,9 @@ Definition three : nat := @doit3times.
 
 Definition succ (n : nat) : nat :=
   fun (X : Type) (f : X -> X) (x : X) => f (n X f x).
-(*Still not clear about the definition of the succ function above*)
+(*Still not clear about the definition of the succ function above
+Skipping below for now 15/5/18
+*)
 
 Example succ_1 : succ zero = one.
 Proof. simpl. reflexivity. Qed.
