@@ -151,6 +151,9 @@ Qed.
 Example and_exercise :
   forall n m : nat, n + m = 0 -> n = 0 /\ m = 0.
 Proof.
+  intros n m H. split.
+  { inversion H. }
+  { inversion H.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 

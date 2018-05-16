@@ -189,7 +189,7 @@ Example trans_eq_exercise : forall (n m o p : nat),
      (n + p) = m ->
      (n + p) = (minustwo o).
 Proof.
-  intros n m o p eq1 eq2. rewrite -> eq2. apply eq1. Qed.
+  intros n m o p eq1 eq2. apply trans_eq with m. apply eq2. apply eq1. Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -260,13 +260,17 @@ Theorem inversion_ex2 : forall (n m : nat),
 Proof.
   intros n m H. inversion H as [Hnm]. reflexivity.  Qed.
 
+Definition mylist := 1 :: 1 :: nil.
+Print mylist. 
+
 (** **** Exercise: 1 star (inversion_ex3)  *)
 Example inversion_ex3 : forall (X : Type) (x y z : X) (l j : list X),
   x :: y :: l = z :: j ->
   y :: l = x :: j ->
   x = y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X x y z l j H1 H2. inversion H1. inversion H2. symmetry. apply H0.
+
 (** [] *)
 
 (** When used on a hypothesis involving an equality between
@@ -329,8 +333,9 @@ Example inversion_ex6 : forall (X : Type)
   x :: y :: l = [] ->
   y :: l = z :: j ->
   x = z.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros X x y z l j H1 H2. inversion H1.
+Qed.
+
 (** [] *)
 
 (** To summarize this discussion, suppose [H] is a hypothesis in the
@@ -397,7 +402,7 @@ Theorem silly3' : forall (n : nat),
   true = beq_nat n 5  ->
   true = beq_nat (S (S n)) 7.
 Proof.
-  intros n eq H.
+  intros n eq H. 
   symmetry in H. apply eq in H. symmetry in H.
   apply H.  Qed.
 
@@ -421,7 +426,16 @@ Theorem plus_n_n_injective : forall n m,
      n = m.
 Proof.
   intros n. induction n as [| n'].
-    (* FILL IN HERE *) Admitted.
+  { intros m H0. simpl in H0. destruct m as [| m'].
+    { reflexivity. }
+    { inversion H0. } }
+  { intros m H1. simpl in H1. destruct m as [| m'].
+    { inversion H1. }
+    { inversion H1. rewrite <- plus_n_Sm in H0. 
+      assert (H: m' + S m' = S (m' + m')). {rewrite -> plus_n_Sm. reflexivity. }
+      rewrite -> H in H0. inversion H0.
+      rewrite -> IHn'.
+      (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
