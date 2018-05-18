@@ -73,6 +73,10 @@ Proof.
 (** **** Exercise: 2 stars, optional (silly_ex)  *)
 (** Complete the following proof without using [simpl]. *)
 
+Definition test := (forall n, evenb n = true -> oddb (S n) = true).
+
+Check test.
+
 Theorem silly_ex :
      (forall n, evenb n = true -> oddb (S n) = true) ->
      evenb 3 = true ->
@@ -260,9 +264,6 @@ Theorem inversion_ex2 : forall (n m : nat),
 Proof.
   intros n m H. inversion H as [Hnm]. reflexivity.  Qed.
 
-Definition mylist := 1 :: 1 :: nil.
-Print mylist. 
-
 (** **** Exercise: 1 star (inversion_ex3)  *)
 Example inversion_ex3 : forall (X : Type) (x y z : X) (l j : list X),
   x :: y :: l = z :: j ->
@@ -429,13 +430,16 @@ Proof.
   { intros m H0. simpl in H0. destruct m as [| m'].
     { reflexivity. }
     { inversion H0. } }
-  { intros m H1. simpl in H1. destruct m as [| m'].
+  { intros m H1. destruct m as [| m'].
     { inversion H1. }
-    { inversion H1. rewrite <- plus_n_Sm in H0. 
-      assert (H: m' + S m' = S (m' + m')). {rewrite -> plus_n_Sm. reflexivity. }
-      rewrite -> H in H0. inversion H0.
-      rewrite -> IHn'.
-      (* FILL IN HERE *) Admitted.
+    { inversion H1. simpl in H1.
+      apply f_equal. apply IHn'.
+      rewrite <- plus_n_Sm in H0. rewrite <- plus_n_Sm in H0.
+      apply S_injective in H0.
+      apply H0. } }
+Qed.
+
+
 (** [] *)
 
 (* ################################################################# *)
@@ -591,7 +595,15 @@ Proof.
 Theorem beq_nat_true : forall n m,
     beq_nat n m = true -> n = m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n'].
+  { intros m eq. destruct m as [| m'].
+    { reflexivity. }
+    { inversion eq. } }
+  { intros m eq. destruct m as [| m'].
+    { inversion eq. }
+    { apply f_equal. apply IHn'. simpl in eq. apply eq. }}
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars, advancedM (beq_nat_true_informal)  *)
@@ -643,7 +655,7 @@ Theorem double_injective_take2 : forall n m,
      double n = double m ->
      n = m.
 Proof.
-  intros n m.
+  intros n m. 
   (* [n] and [m] are both in the context *)
   generalize dependent n.
   (* Now [n] is back in the goal and we can do induction on
@@ -716,7 +728,15 @@ Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X),
      length l = n ->
      nth_error l n = None.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n X l.
+  generalize dependent n.
+  induction l as [|h tl IH].
+  { simpl. intros n H. reflexivity. }
+  { intros n H. simpl. destruct n as [| n'].
+    { simpl. inversion H. }
+    { simpl. apply IH. simpl in H. apply S_injective. apply H. }}
+Qed.
+
 (** [] *)
 
 
@@ -884,6 +904,7 @@ Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
   split l = (l1, l2) ->
   combine l1 l2 = l.
 Proof.
+  intros X Y l l1 l2 eq.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 

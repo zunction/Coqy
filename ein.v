@@ -48,4 +48,3 @@ Inductive cigar : Type :=
   | BlueMaster : cigar
   | Prince : cigar
   | Blend : cigar.
-  
