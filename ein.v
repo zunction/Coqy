@@ -12,6 +12,23 @@ own a different pet and smokes a different type of cigar. Thus we can have a fun
 attribute that takes in the nationality and outputs the attribute. Then we require for different nationalities,
 the attribute output must be distinct.
 
+Hints:
+1. the Brit lives in the red house
+2. the Swede keeps dogs as pets
+3. the Dane drinks tea
+4. the green house is on the left of the white house
+5. the green house's owner drinks coffee
+6. the person who smokes Pall Mall rears birds
+7. the owner of the yellow house smokes Dunhill
+8. the man living in the center house drinks milk
+9. the Norwegian lives in the first house
+10. the man who smokes blends lives next to the one who keeps cats
+11. the man who keeps horses lives next to the man who smokes Dunhill
+12. the owner who smokes BlueMaster drinks beer
+13. the German smokes Prince
+14. the Norwegian lives next to the blue house
+15. the man who smokes blend has a neighbor who drinks water
+
 *)
 
 Inductive nationality : Type :=
@@ -48,3 +65,5 @@ Inductive cigar : Type :=
   | BlueMaster : cigar
   | Prince : cigar
   | Blend : cigar.
+
+

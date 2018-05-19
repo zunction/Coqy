@@ -904,7 +904,13 @@ Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
   split l = (l1, l2) ->
   combine l1 l2 = l.
 Proof.
-  intros X Y l l1 l2 eq.
+  intros X Y.
+  destruct l as [| h tl].
+  { simpl. intros l1 l2 eq. destruct l1 as [| h tl].
+    { simpl. reflexivity. }
+    { simpl. inversion eq. } }
+  { intros l1 l2 eq. 
+(* STUCK !!! *)
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -976,6 +982,11 @@ Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool),
   f (f (f b)) = f b.
 Proof.
+  intros f b. apply f_equal. destruct b eqn:H.
+  { destruct f eqn:f1.
+    { reflexivity. }
+    { rewrite <- f1.   }
+  }
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
