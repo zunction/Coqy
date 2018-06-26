@@ -985,7 +985,7 @@ Proof.
   intros f b. apply f_equal. destruct b eqn:H.
   { destruct f eqn:f1.
     { reflexivity. }
-    { rewrite <- f1.   }
+    { rewrite <- H. inversion H. rewrite <- H0.   }
   }
   (* FILL IN HERE *) Admitted.
 (** [] *)

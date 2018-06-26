@@ -21,6 +21,8 @@ Check guess (5).
 *)
 Check drop 3 (guess 7) (guess 3).
 Check drop 3 (guess 3) (drop 2 (guess 7) (guess 3)).
+Check drop 3 (drop 2 (guess 7) (guess 3)) (guess 3).
+Check guess 3.
 
 Fixpoint play (target : nat) (s : strategy) : bool :=
   match s with

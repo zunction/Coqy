@@ -398,7 +398,7 @@ Fact not_implies_our_not : forall (P:Prop),
   ~ P -> (forall (Q:Prop), P -> Q).
 Proof.
   intros P contra Q p. apply contra in p. destruct p.
-
+Qed.
 (** [] *)
 
 (** This is how we use [not] to state that [0] and [1] are different
@@ -465,7 +465,9 @@ Qed.
 Theorem not_both_true_and_false : forall P : Prop,
   ~ (P /\ ~P).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P. unfold not. intros [H1 H2]. apply H2. apply H1.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 1 star, advancedM (informal_not_PNP)  *)
@@ -571,19 +573,41 @@ Qed.
 Theorem iff_refl : forall P : Prop,
   P <-> P.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P. split.
+  { intros p.  apply p. }
+  { intros p.  apply p. }
+Qed.
 
 Theorem iff_trans : forall P Q R : Prop,
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. 
+  intros P Q R. intros [HPQ HQP]. intros [HQR HRQ]. split.
+  { intros p. apply HQR. apply HPQ. apply p. }
+  { intros r.  apply HQP. apply HRQ. apply r. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (or_distributes_over_and)  *)
 Theorem or_distributes_over_and : forall P Q R : Prop,
   P \/ (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P Q R. split.
+  { intros [HP | [HQ HR]].
+    { split. (* P is true *)
+    { left. apply HP. }
+    { left. apply HP. }}
+    { split. (* Q /\ R is true *)
+    { right. apply HQ. }
+    { right. apply HR. } 
+  }}
+  { intros [[HP1 | HQ] [HP2 | HR]].
+    { left. apply HP1. } (* P is true *)
+    { left. apply HP1. } (* P and R are true *)
+    { left. apply HP2. } (* P and Q are true *)
+    { right. split. apply HQ. apply HR. } (* Q and R are true *)
+  }
+Qed.
+
 (** [] *)
 
 (** Some of Coq's tactics treat [iff] statements specially, avoiding
@@ -683,7 +707,10 @@ Proof.
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X P H1. unfold not. intros H2. inversion H2. 
+  apply H in H1. apply H1.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
@@ -693,7 +720,14 @@ Proof.
 Theorem dist_exists_or : forall (X:Type) (P Q : X -> Prop),
   (exists x, P x \/ Q x) <-> (exists x, P x) \/ (exists x, Q x).
 Proof.
-   (* FILL IN HERE *) Admitted.
+  intros X P Q. split.
+  { intros [x HX]. destruct HX.
+    left. exists x. apply H.
+    right. exists x. apply H. }
+  { intros [[x HP] | [x HQ]].
+    { exists x. left. apply HP. }
+    { exists x. right. apply HQ. } }
+Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -778,6 +812,14 @@ Lemma In_map_iff :
     In y (map f l) <->
     exists x, f x = y /\ In x l.
 Proof.
+  intros A B f l y. split.
+  { intros H. induction l as [|h tl IH].
+    { simpl in H. inversion H. }
+    { exists h. simpl. split. 
+      { apply H. }
+      { apply H in IH. 
+    }
+  }
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
