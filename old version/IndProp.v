@@ -127,7 +127,11 @@ Qed.
 Theorem ev_double : forall n,
   ev (double n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+    { simpl. apply ev_0. }
+    { simpl. apply ev_SS. apply IHn'. }
+Qed.
+
 (** [] *)
 
 (* ################################################################# *)

@@ -114,7 +114,7 @@ SearchAbout rev.
 Theorem rev_exercise1 : forall (l l' : list nat),
      l = rev l' ->
      l' = rev l.
-Proof. 
+Proof.
   intros l l' eq1. rewrite -> eq1. symmetry. apply rev_involutive.
   (*Alternative: 
   rewrite -> eq1. 
@@ -432,7 +432,7 @@ Proof.
     { inversion H0. } }
   { intros m H1. destruct m as [| m'].
     { inversion H1. }
-    { inversion H1. simpl in H1.
+    { inversion H1.
       apply f_equal. apply IHn'.
       rewrite <- plus_n_Sm in H0. rewrite <- plus_n_Sm in H0.
       apply S_injective in H0.
@@ -906,7 +906,12 @@ Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
 Proof.
   intros X Y.
   destruct l as [| h tl].
-  { simpl. intros l1 l2 eq. destruct l1 as [| h tl].
+  { simpl. intros l1 l2 eq. inversion eq. simpl. reflexivity. }
+  { intros l1 l2 eq. destruct combine.
+    { inversion eq. 
+  
+  
+  destruct l1 as [| h tl].
     { simpl. reflexivity. }
     { simpl. inversion eq. } }
   { intros l1 l2 eq. 
