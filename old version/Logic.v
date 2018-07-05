@@ -815,19 +815,43 @@ Proof.
   intros A B f l y. split.
   { intros H. induction l as [|h tl IH].
     { simpl in H. inversion H. }
-    { exists h. simpl. split. 
-      { apply H. }
-      { apply H in IH. 
-    }
-  }
-  (* FILL IN HERE *) Admitted.
+    { simpl in H. destruct H.
+      { exists h. split. apply H. simpl. left. reflexivity. }
+      { apply IH in H. inversion H. exists x. split. destruct H0. 
+        { apply H0. }
+        { simpl. destruct H0. right. apply H1. } } } }
+  { intros [x [H1 H2]]. induction l as [|h tl IH].
+    { destruct H2. }
+    { simpl. destruct H2.
+      { left. rewrite -> H. apply H1. }
+      { right. apply IH. apply H. } } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars (in_app_iff)  *)
 Lemma in_app_iff : forall A l l' (a:A),
   In a (l++l') <-> In a l \/ In a l'.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros A l l' a. split.
+  { intros H. induction l as [| h tl IH].
+    { simpl in H. right. apply H. }
+    { simpl in H. simpl. destruct H.
+      { left. left. apply H. }
+      { apply IH in H. destruct H.
+        { left. right. apply H. }
+        { right. apply H. } } } }
+  { intros H.
+    { induction l as [| h tl IH].
+      { destruct H.
+        { inversion H. }
+        { simpl. apply H. } }
+    destruct H. destruct H.
+    { simpl. left. apply H. }
+    { simpl. right. apply IH. left. apply H. }
+    { simpl. right. apply IH. right. apply H. } } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars (All)  *)
@@ -841,14 +865,25 @@ Proof.
     lemma below.  (Of course, your definition should _not_ just
     restate the left-hand side of [All_In].) *)
 
-Fixpoint All {T : Type} (P : T -> Prop) (l : list T) : Prop
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint All {T : Type} (P : T -> Prop) (l : list T) : Prop :=
+  match l with
+  | [] => True
+  | x' :: l' => P x' /\ All P l'
+  end.
 
 Lemma All_In :
   forall T (P : T -> Prop) (l : list T),
     (forall x, In x l -> P x) <->
     All P l.
 Proof.
+  intros T P l. split.
+  { intros H. induction l as [|h tl IH].
+    { simpl. apply I. }
+    { simpl. split.
+      { apply H. simpl. left. reflexivity. }
+      { apply IH. simpl in H. }
+    }
+   }
   (* FILL IN HERE *) Admitted.
 (** [] *)
 

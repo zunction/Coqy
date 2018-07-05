@@ -75,7 +75,7 @@ Inductive day : Type :=
   | friday : day
   | saturday : day
   | sunday : day.
-
+Check day.
 (** The type is called [day], and its members are [monday],
     [tuesday], etc.  The second and following lines of the definition
     can be read "[monday] is a [day], [tuesday] is a [day], etc."
@@ -487,7 +487,7 @@ Fixpoint plus (n : nat) (m : nat) : nat :=
     | O => m
     | S n' => S (plus n' m)
   end.
-Check plus.
+
 (** Adding three to two now gives us five, as we'd expect. *)
 
 Compute (plus 3 2).
