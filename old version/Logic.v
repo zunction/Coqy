@@ -881,10 +881,17 @@ Proof.
     { simpl. apply I. }
     { simpl. split.
       { apply H. simpl. left. reflexivity. }
-      { apply IH. simpl in H. }
-    }
-   }
-  (* FILL IN HERE *) Admitted.
+      { apply IH. intros x H1. apply H. simpl. right. apply H1. } } }
+   {
+    induction l as [| h tl IH].
+    { simpl. intros H x contra. inversion contra.  }
+    { intros [H1 H2] x. intros [H3 | H4].
+      { rewrite <- H3. apply H1. }
+      { apply IH.
+        { apply H2. }
+        { apply H4. } } } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars (combine_odd_even)  *)
@@ -894,8 +901,8 @@ Proof.
     equivalent to [Podd n] when [n] is odd and equivalent to [Peven n]
     otherwise. *)
 
-Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop :=
+  fun n => if oddb n then Podd n else Peven n.
 
 (** To test your definition, prove the following facts: *)
 
@@ -905,7 +912,10 @@ Theorem combine_odd_even_intro :
     (oddb n = false -> Peven n) ->
     combine_odd_even Podd Peven n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros Podd Peven n H1 H2. unfold combine_odd_even. destruct (oddb n).
+  { apply H1. reflexivity. }
+  { apply H2. reflexivity. }
+Qed.
 
 Theorem combine_odd_even_elim_odd :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -913,7 +923,8 @@ Theorem combine_odd_even_elim_odd :
     oddb n = true ->
     Podd n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold combine_odd_even in H. rewrite H0 in H. apply H.
+Qed.
 
 Theorem combine_odd_even_elim_even :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -921,7 +932,8 @@ Theorem combine_odd_even_elim_even :
     oddb n = false ->
     Peven n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold combine_odd_even in H. rewrite H0 in H. apply H.
+Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -1150,6 +1162,14 @@ Fixpoint rev_append {X} (l1 l2 : list X) : list X :=
 Definition tr_rev {X} (l : list X) : list X :=
   rev_append l [].
 
+Lemma rev_append_one : forall (X : Type) (l1 l2 : list X),
+  rev_append l1 l2 = rev_append l1 [] ++ l2.
+Proof. intros X l1. induction l1 as [|h tl IH].
+  { simpl. reflexivity. }
+  { simpl. intros l2. rewrite IH. symmetry. rewrite IH.
+    rewrite <- app_assoc. reflexivity. }
+Qed.
+
 (** This version is said to be _tail-recursive_, because the recursive
     call to the function is the last operation that needs to be
     performed (i.e., we don't have to execute [++] after the recursive
@@ -1157,7 +1177,14 @@ Definition tr_rev {X} (l : list X) : list X :=
     case.  Prove that the two definitions are indeed equivalent. *)
 
 Lemma tr_rev_correct : forall X, @tr_rev X = @rev X.
-(* FILL IN HERE *) Admitted.
+Proof.
+  intros X. apply functional_extensionality.
+  intros x. induction x as [|h tl IH].
+  { reflexivity. }
+  { unfold tr_rev. simpl. unfold tr_rev in IH. rewrite <- IH.
+    apply rev_append_one.
+  }
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -1189,8 +1216,13 @@ Theorem evenb_double_conv : forall n,
   exists k, n = if evenb n then double k
                 else S (double k).
 Proof.
+  induction n as [|n' IH].
+  { exists 0. reflexivity. }
+  { rewrite evenb_S. destruct (evenb n').
+    { simpl. inversion IH. exists x. rewrite H. reflexivity. }
+    { simpl. inversion IH. exists (S x). rewrite->H. reflexivity. } }
+Qed.
   (* Hint: Use the [evenb_S] lemma from [Induction.v]. *)
-  (* FILL IN HERE *) Admitted.
 (** [] *)
 
 Theorem even_bool_prop : forall n,
@@ -1303,12 +1335,48 @@ Proof. apply even_bool_prop. reflexivity. Qed.
 Lemma andb_true_iff : forall b1 b2:bool,
   b1 && b2 = true <-> b1 = true /\ b2 = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros. destruct b1.
+  { destruct b2.
+    { split. intros H.
+      { split. reflexivity. reflexivity. }
+      { simpl. split. }
+    }
+    { split.
+      { simpl. intros H. split. reflexivity. apply H. }
+      { simpl. intros [H1 H2]. apply H2. } } }
+      split.
+      { destruct b2. simpl. intros H.
+        { split. apply H. reflexivity. }
+        { intros H. split. simpl in H. apply H. apply H. }
+      }
+    { destruct b2.
+      { intros [H1 H2]. simpl. apply H1. }
+      { intros [H1 H2]. simpl. apply H1. }
+    }
+Qed.
 
 Lemma orb_true_iff : forall b1 b2,
   b1 || b2 = true <-> b1 = true \/ b2 = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros. destruct b1. split.
+  { destruct b2.
+    { simpl. intros H. left. apply H. }
+    { simpl. intros H. left. apply H. }
+  }
+  { destruct b2.
+    { intros [H1 | H2]. reflexivity. reflexivity. }
+    { intros [H1 | H2]. reflexivity. reflexivity. }
+  }
+  { split.
+  { destruct b2.
+    { intros H. right. reflexivity. }
+    { intros H. left. inversion H. } }
+  { destruct b2. 
+    { intros [H1 | H2]. reflexivity. reflexivity. }
+    { intros [H1 | H2]. inversion H1. inversion H2. }
+  } }
+Qed.  
+
 (** [] *)
 
 (** **** Exercise: 1 star (beq_nat_false_iff)  *)
@@ -1319,7 +1387,18 @@ Proof.
 Theorem beq_nat_false_iff : forall x y : nat,
   beq_nat x y = false <-> x <> y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+induction x as [|x' IH].
+- destruct y as [|y'].
+  * split. intros H. inversion H. intros []. reflexivity.
+  * split. intros []. unfold not. intros H. inversion H. intros H. reflexivity.
+- destruct y as [|y'].
+  * split. intros []. unfold not. intros H. inversion H. intros H. reflexivity.
+  * split. intros H. unfold not. intros H1. inversion H1. apply IH in H.
+           rewrite H2 in H. destruct H. reflexivity.
+           intros H. simpl. rewrite -> IH. unfold not in H. unfold not.
+           intros H1. rewrite H1 in H. apply H. reflexivity.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars (beq_list)  *)
@@ -1330,15 +1409,35 @@ Proof.
     definition is correct, prove the lemma [beq_list_true_iff]. *)
 
 Fixpoint beq_list {A : Type} (beq : A -> A -> bool)
-                  (l1 l2 : list A) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+                  (l1 l2 : list A) : bool :=
+  match l1, l2 with
+  | [], [] => true
+  | [], _ => false
+  | _, [] => false
+  | h :: tl, h' :: tl' => beq h h' && beq_list beq tl tl'
+  end.
 
 Lemma beq_list_true_iff :
   forall A (beq : A -> A -> bool),
     (forall a1 a2, beq a1 a2 = true <-> a1 = a2) ->
     forall l1 l2, beq_list beq l1 l2 = true <-> l1 = l2.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros A beq H. induction l1 as [|h tl IH]. 
+  - simpl. split. (* l1 = [] *)
+    * destruct l2 as [|h' tl']. intros []. reflexivity. intros H1. inversion H1.
+    * destruct l2 as [|h' tl']. intros []. reflexivity. intros H1. inversion H1.
+  - simpl. split.
+    * destruct l2 as [|h' tl']. 
+      { intros H1. inversion H1. }
+      { rewrite -> andb_true_iff. intros [H1 H2]. 
+        apply H in H1. apply IH in H2. 
+        rewrite -> H1. rewrite ->H2. reflexivity. }
+    * destruct l2 as [|h' tl'].
+      { intros H1. inversion H1. }
+      { intros H1. apply andb_true_iff. inversion H1. split.
+        { apply H. reflexivity. }
+        { rewrite <- H3. apply IH. reflexivity. } }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, recommended (All_forallb)  *)
@@ -1357,7 +1456,16 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
 Theorem forallb_true_iff : forall X test (l : list X),
    forallb test l = true <-> All (fun x => test x = true) l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction l as [|h tl IH].
+  - split. intros []. simpl. apply I. intros []. reflexivity.
+  - split.
+    * simpl. rewrite -> andb_true_iff. intros [H1 H2]. split.
+    { apply H1. }
+    { apply IH.  apply H2. }
+    * simpl. intros [H1 H2]. apply andb_true_iff. split.
+    { apply H1. }
+    { apply IH.  apply H2. }
+Qed.
 
 (** Are there any important properties of the function [forallb] which
     are not captured by this specification? *)
@@ -1490,6 +1598,7 @@ Qed.
 Theorem excluded_middle_irrefutable:  forall (P:Prop),
   ~ ~ (P \/ ~ P).
 Proof.
+  intros P. unfold not. intros. destruct H. right.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 

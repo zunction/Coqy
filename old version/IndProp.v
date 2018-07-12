@@ -275,12 +275,14 @@ Proof.
 Theorem SSSSev__even : forall n,
   ev (S (S (S (S n)))) -> ev n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n E. inversion E. inversion H0. apply H2.
+Qed.
 
 Theorem even5_nonsense :
   ev 5 -> 2 + 2 = 9.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros E. inversion E. inversion H0. inversion H2.
+Qed.
 (** [] *)
 
 (** The way we've used [inversion] here may seem a bit

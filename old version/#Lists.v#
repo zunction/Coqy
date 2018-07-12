@@ -188,7 +188,7 @@ Fixpoint repeat (n count : nat) : natlist :=
   | O => nil
   | S count' => n :: (repeat n count')
   end.
-
+Check repeat.
 (* ----------------------------------------------------------------- *)
 (** *** Length *)
 
@@ -1034,12 +1034,7 @@ Fixpoint nth_error' (l:natlist) (n:nat) : natoption :=
 (** Coq's conditionals are exactly like those found in any other
     language, with one small generalization.  Since the boolean type
     is not built in, Coq actually supports conditional expressions over
-    _any_ 
-    
-    
-    
-    
-    inductively defined type with exactly two constructors.  The
+    _any_ inductively defined type with exactly two constructors.  The
     guard is considered true if it evaluates to the first constructor
     in the [Inductive] definition and false if it evaluates to the
     second. *)
