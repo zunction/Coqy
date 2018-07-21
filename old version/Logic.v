@@ -1519,7 +1519,7 @@ Proof.
   apply beq_nat_true_iff.
 Qed.
 
-(** It may seem strange that the general excluded middle is not
+(** kIt may seem strange that the general excluded middle is not
     available by default in Coq; after all, any given claim must be
     either true or false.  Nonetheless, there is an advantage in not
     assuming the excluded middle: statements in Coq can make stronger
@@ -1598,8 +1598,10 @@ Qed.
 Theorem excluded_middle_irrefutable:  forall (P:Prop),
   ~ ~ (P \/ ~ P).
 Proof.
-  intros P. unfold not. intros. destruct H. right.
-  (* FILL IN HERE *) Admitted.
+  intros P. unfold not. intros H. apply H.
+  right. intros p. apply H. left. apply p.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (not_exists_dist)  *)
@@ -1619,6 +1621,9 @@ Theorem not_exists_dist :
   forall (X:Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> (forall x, P x).
 Proof.
+  unfold excluded_middle. intros EM.
+  intros X P. intros H x. destruct H.
+  exists x. intros p.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
