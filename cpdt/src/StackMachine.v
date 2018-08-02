@@ -571,7 +571,7 @@ Inductive texp : type -> Set :=
 | TNConst : nat -> texp Nat
 | TBConst : bool -> texp Bool
 | TBinop : forall t1 t2 t, tbinop t1 t2 t -> texp t1 -> texp t2 -> texp t.
-Check TBinop (TEq Nat).
+
 (** Thanks to our use of dependent types, every well-typed [texp] represents a well-typed source expression, by construction.  This turns out to be very convenient for many things we might want to do with expressions.  For instance, it is easy to adapt our interpreter approach to defining semantics.  We start by defining a function mapping the types of our object language into Coq types: *)
 
 Definition typeDenote (t : type) : Set :=
