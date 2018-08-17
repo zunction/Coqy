@@ -65,7 +65,7 @@ Definition swap_pair (p : natprod) : natprod :=
   match p with
   | (x,y) => (y,x)
   end.
-
+Check swap
 (** Let's try to prove a few simple facts about pairs.
 
     If we state things in a particular (and slightly peculiar) way, we
@@ -188,7 +188,7 @@ Fixpoint repeat (n count : nat) : natlist :=
   | O => nil
   | S count' => n :: (repeat n count')
   end.
-Check repeat.
+
 (* ----------------------------------------------------------------- *)
 (** *** Length *)
 

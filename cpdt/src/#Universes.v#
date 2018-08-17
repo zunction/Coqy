@@ -196,7 +196,7 @@ Inductive exp : Type -> Type :=
 | Const : forall T, T -> exp T
 | Pair : forall T1 T2, exp T1 -> exp T2 -> exp (T1 * T2)
 | Eq : forall T, exp T -> exp T -> exp bool.
-[
+
 (** Note that before we had to include an annotation [: Set] for the variable [T] in [Const]'s type, but we need no annotation now.  When the type of a variable is not known, and when that variable is used in a context where only types are allowed, Coq infers that the variable is of type [Type], the right behavior here, though it was wrong for the [Set] version of [exp].
 
    Our new definition is accepted.  We can build some sample expressions. *)
